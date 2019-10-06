@@ -3,16 +3,16 @@ package com.edilson.justiniano.kalah.api.service;
 import com.edilson.justiniano.kalah.api.model.GameResponse;
 import com.edilson.justiniano.kalah.persistence.game.model.Board;
 import com.edilson.justiniano.kalah.persistence.game.model.Game;
-import com.edilson.justiniano.kalah.persistence.game.model.GameStatus;
-import com.edilson.justiniano.kalah.persistence.game.model.Player;
-import com.edilson.justiniano.kalah.persistence.game.repository.GameRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
-import java.time.Instant;
-import java.util.UUID;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.edilson.justiniano.kalah.persistence.game.model.GameStatus.RUNNING;
 import static com.edilson.justiniano.kalah.persistence.game.model.Player.PLAYER_ONE;
@@ -38,11 +38,31 @@ public class GameBuilder {
     }
 
     public GameResponse buildGameResponse(Game game) {
-        return GameResponse.builder()
-                .id(game.getGameId())
-                .url(generateGameUrl(game.getGameId()))
+        return buildGameResponseBuilder(game)
                 .build();
 
+    }
+
+    public GameResponse buildGameStatusResponse(Game game) {
+        return buildGameResponseBuilder(game)
+                .status(buildGameStatus(game))
+                .build();
+    }
+
+    private Map<Integer, Integer> buildGameStatus(Game game) {
+        int[] pits = game.getBoard().getPits();
+        Map<Integer, Integer> boardStatus = new HashMap<>();
+        for (int i = 0; i < pits.length; i++) {
+            boardStatus.put((i + 1), pits[i]);
+        }
+
+        return boardStatus;
+    }
+
+    private GameResponse.GameResponseBuilder buildGameResponseBuilder(Game game) {
+        return GameResponse.builder()
+                .id(game.getGameId())
+                .url(generateGameUrl(game.getGameId()));
     }
 
     private Board buildBoard() {
@@ -62,8 +82,7 @@ public class GameBuilder {
         String port = environment.getProperty("server.port");
         String host = InetAddress.getLoopbackAddress().getHostAddress();
 
-        return new StringBuilder("http://")
-                .append(host)
+        return new StringBuilder(host)
                 .append(":")
                 .append(port)
                 .append("/games/")
@@ -71,5 +90,6 @@ public class GameBuilder {
                 .toString();
 
     }
+
 
 }

@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.edilson.justiniano.kalah.api.ApiConstants.PATH_PARAM_GAME_ID;
+import static com.edilson.justiniano.kalah.api.ApiConstants.PATH_PARAM_PIT_ID;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @Slf4j
@@ -22,7 +24,7 @@ public class GameController {
 
     private static final String GAME_URL = "/games";
     private static final String GAME_URL_WITH_GAME_ID = "/games/{gameId}";
-    private static final String MOVEMENT_URL = "/{gameId}/pits/{pitId}";
+    private static final String MOVEMENT_URL = "/games/{gameId}/pits/{pitId}";
 
     private final GameService gameService;
 
@@ -53,12 +55,14 @@ public class GameController {
                 .noContent()
                 .build();
     }
-//
-//    @PutMapping(MOVEMENT_URL)
-//    public ResponseEntity moveGame(@PathVariable(PATH_PARAM_GAME_ID) String gameId,
-//                                   @PathVariable(PATH_PARAM_PIT_ID) int pitId) {
-//        log.info("Deleting the game. GameId: {}.", gameId);
-//
-//
-//    }
+
+    @PutMapping(MOVEMENT_URL)
+    public ResponseEntity<GameResponse> moveGame(@PathVariable(PATH_PARAM_GAME_ID) String gameId,
+                                                 @PathVariable(PATH_PARAM_PIT_ID) int pitId) throws GameApiException {
+        log.info("Making a movement in the game. GameId: {} and PitId: {}.", gameId, pitId);
+
+
+        return ResponseEntity
+                .ok(gameService.makeMovement(gameId, pitId));
+    }
 }

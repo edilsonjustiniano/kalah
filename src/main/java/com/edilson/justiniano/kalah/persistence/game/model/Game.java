@@ -42,6 +42,16 @@ public class Game {
         return GameStatus.RUNNING.equals(getGameStatus());
     }
 
+    @Transient
+    public boolean isPlayerOneTurn() {
+        return Player.PLAYER_ONE.equals(getNextPlayer());
+    }
+
+    @Transient
+    public boolean isPlayerTwoTurn() {
+        return Player.PLAYER_TWO.equals(getNextPlayer());
+    }
+
     //Using tell don't ask design pattern to encapsulate some business logic and avoid split them around the code
     @Transient
     public static String generateGameId() {
