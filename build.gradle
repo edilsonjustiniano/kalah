@@ -1,0 +1,30 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.9.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+	id 'java'
+	id 'idea'
+}
+
+group = 'com.edilson.justiniano'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	//implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	//runtimeOnly 'com.h2database:h2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Mongo DB
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+	compile group: 'org.codehaus.groovy', name: 'groovy', version: '3.0.0-beta-3'
+	compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '3.0.0-beta-1'
+	compile group: 'ch.qos.logback.contrib', name: 'logback-json-classic', version: '0.1.5'
+	compile group: 'ch.qos.logback.contrib', name: 'logback-jackson', version: '0.1.5'
+	compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '5.2'
+}
