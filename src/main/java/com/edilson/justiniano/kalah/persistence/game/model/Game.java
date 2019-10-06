@@ -1,62 +1,50 @@
 package com.edilson.justiniano.kalah.persistence.game.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.UUID;
 
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Document
 public class Game {
 
     @Id
     private String gameId;
     private long startedTime;
-    private long duration;
+    private Long duration;
 
-    public String getGameId() {
-        return gameId;
+    private GameStatus gameStatus;
+    private Board board;
+
+    private Player nextPlayer;
+
+    //Using tell don't ask design pattern to encapsulate some business logic and avoid split them around the code
+    // These transient annotated methods will not be stored on our db
+    @Transient
+    public boolean isGameOver() {
+        return GameStatus.FINISHED.equals(getGameStatus());
     }
 
-    public void setGameId(String gameId) {
-        this.gameId = gameId;
+    //Using tell don't ask design pattern to encapsulate some business logic and avoid split them around the code
+    @Transient
+    public boolean isGameRunning() {
+        return GameStatus.RUNNING.equals(getGameStatus());
     }
 
-    public long getStartedTime() {
-        return startedTime;
-    }
-
-    public void setStartedTime(long startedTime) {
-        this.startedTime = startedTime;
-    }
-
-    public long getDuration() {
-        return duration;
-    }
-
-    public void setDuration(long duration) {
-        this.duration = duration;
-    }
-
-    public static class Builder {
-
-        private Game game = new Game();
-
-        public Builder gameId(String gameId) {
-            game.setGameId(gameId);
-            return this;
-        }
-
-        public Builder startedTime(long startedTime) {
-            game.setStartedTime(startedTime);
-            return this;
-        }
-
-        public Builder duration(long duration) {
-            game.setDuration(duration);
-            return this;
-        }
-
-        public Game build() {
-            return game;
-        }
+    //Using tell don't ask design pattern to encapsulate some business logic and avoid split them around the code
+    @Transient
+    public static String generateGameId() {
+        return UUID.randomUUID().toString();
     }
 }
