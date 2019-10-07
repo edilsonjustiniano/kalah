@@ -22,6 +22,8 @@ public class Board {
 
     private int[] pits;
 
+    //Using tell don't ask design pattern to encapsulate some business logic and avoid split them around the code
+    // These transient annotated methods will not be stored on our db
     @Transient
     public boolean isPlayerOnePit(int selectedPit) {
         return selectedPit >= 0 && selectedPit < (PLAYER_ONE_KALAH - 1);
@@ -30,11 +32,6 @@ public class Board {
     @Transient
     public boolean isPlayerTwoPit(int selectedPit) {
         return selectedPit >= PLAYER_ONE_KALAH && selectedPit < (PLAYER_TWO_KALAH - 1);
-    }
-
-    @Transient
-    public boolean isPlayerOneKalah(int pitIndex) {
-        return PLAYER_ONE_KALAH == (pitIndex + 1);
     }
 
     @Transient
@@ -53,14 +50,14 @@ public class Board {
     }
 
     @Transient
-    public boolean isPlayerOneKalahsEmtpy() {
+    public boolean isPlayerOnePitsEmtpy() {
         return IntStream.range(0 , (PLAYER_ONE_KALAH - 2))
                 .noneMatch(pit -> pit > 0);
     }
 
     @Transient
-    public boolean isPlayerTwoKalahsEmtpy() {
-        return IntStream.range(0 , (PLAYER_ONE_KALAH))
+    public boolean isPlayerTwoPitsEmtpy() {
+        return IntStream.range(PLAYER_ONE_KALAH , (PLAYER_TWO_KALAH - 2))
                 .noneMatch(pit -> pit > 0);
     }
 

@@ -4,16 +4,19 @@ import com.edilson.justiniano.kalah.api.exception.GameApiException;
 import com.edilson.justiniano.kalah.api.model.GameResponse;
 import com.edilson.justiniano.kalah.persistence.game.model.Board;
 import com.edilson.justiniano.kalah.persistence.game.model.Game;
-import com.edilson.justiniano.kalah.persistence.game.model.Player;
 import com.edilson.justiniano.kalah.persistence.game.repository.GameRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 import static com.edilson.justiniano.kalah.api.exception.GameApiErrorReason.GAME_NOT_FOUND;
 import static com.edilson.justiniano.kalah.persistence.game.model.GameStatus.FINISHED;
 import static com.edilson.justiniano.kalah.persistence.game.model.Player.PLAYER_ONE;
 import static com.edilson.justiniano.kalah.persistence.game.model.Player.PLAYER_TWO;
+import static java.time.Duration.between;
+import static java.time.Instant.now;
 
 /**
  * Class used to attend all the game controller requests. Create a game, delete, update and retrieve it.
@@ -27,11 +30,13 @@ public class GameService {
     private static final int PLAYER_TWO_KALAH_INDEX = 13;
     private static final int PLAYER_TWO_LAST_PIT_INDEX = 12;
 
-
     private final GameBuilder builder;
     private final GameDataValidator validator;
     private final GameRepository gameRepository;
 
+    /*
+     * Method used to create a new game
+     */
     public GameResponse createGame() {
         log.info("Creating a new game.");
 
@@ -44,6 +49,9 @@ public class GameService {
         return builder.buildGameResponse(game);
     }
 
+    /*
+     * Method used to retrieve a game based on its id
+     */
     public GameResponse searchGame(String gameId) throws GameApiException {
         log.info("Searching for the game. GameId: {}.", gameId);
 
@@ -53,6 +61,9 @@ public class GameService {
         return builder.buildGameResponse(game);
     }
 
+    /*
+     * Method used to remove a game. So far, no validation is done about the game status, but it could be done easily
+     */
     public void removeGame(String gameId) throws GameApiException {
         log.info("Deleting a game. GameId: {}.", gameId);
 
@@ -69,6 +80,9 @@ public class GameService {
         log.debug("Game successfully deleted. GameId: {} and status: {}.", game.getGameId(), game.getGameStatus());
     }
 
+    /*
+     * Method used to start the movement selected by the player one or two
+     */
     public GameResponse makeMovement(String gameId, int pitId) throws GameApiException {
         log.info("Making a movement. GameId: {} and PitId: {}.", gameId, pitId);
 
@@ -77,29 +91,52 @@ public class GameService {
 
         validator.validateMovement(game, normalizePitId);
 
-        applyMovement(game, normalizePitId);
+        startMovement(game, normalizePitId);
 
-        log.debug("The movement has been applied successfully. GameId: {} and PitId: {}.", game.getGameId(), pitId);
+        log.debug("The movement has been done successfully. GameId: {} and PitId: {}.", game.getGameId(), pitId);
         return builder.buildGameStatusResponse(game);
     }
 
     /*
      * Method that is responsible only to apply the movement according the selected pitId
      */
-    private void applyMovement(Game game, int pitId) {
+    private void startMovement(Game game, int pitId) {
         Board board = game.getBoard();
+        int nextPitIndex = moveStones(game, pitId, board);
+
+        // Check the opposite pit is empty
+        takeOppositeStones(game, board, nextPitIndex);
+
+        // Check the end's game after all turns
+        boolean isGameOver = isGameOver(board);
+
+        if (isGameOver) {
+            setGameAsFinished(game);
+        } else {
+            // Set the next player according the rules
+            setNextPlayer(game, board, nextPitIndex);
+        }
+
+        log.debug("Saving the game after apply the movement. GameId: {}.", game.getGameId());
+        gameRepository.save(game);
+
+    }
+
+    private int moveStones(Game game, int pitId, Board board) {
         int numberOfStones = board.getPits()[pitId];
         board.getPits()[pitId] = 0;
 
         int nextPitIndex = pitId;
 
         do {
+            // We need to reset the next Pit index if it is the Player two's kalah
             if (board.isPlayerTwoKalah(nextPitIndex)) {
                 nextPitIndex = 0;
             } else {
                 nextPitIndex++;
             }
 
+            // The stones cannot be put in the opponent's kalah. So, skip it
             if ((game.isPlayerOneTurn() && board.isNotPlayerTwoKalah(nextPitIndex)) ||
                     (game.isPlayerTwoTurn() && board.isNotPlayerOneKalah(nextPitIndex))) {
                 board.getPits()[nextPitIndex] += 1;
@@ -107,47 +144,67 @@ public class GameService {
             }
         } while (numberOfStones > 0);
 
-        // TODO: Check the opposite pit is empty
-        //nextPitIndex is own pit and contains only one pit get all from the opposite
+        return nextPitIndex;
+    }
+
+    private void takeOppositeStones(Game game, Board board, int nextPitIndex) {
+        // If it is the player one turn and the last stone is put in his/her owns pit, get the opposite pits stone
         if (game.isPlayerOneTurn() && board.isPlayerOnePit(nextPitIndex)) {
             if (board.getPits()[nextPitIndex] == 1) {
-                board.getPits()[nextPitIndex] = 0;
-                board.getPits()[PLAYER_TWO_LAST_PIT_INDEX - nextPitIndex] = 0;
-                int oppositeStones = board.getPits()[PLAYER_TWO_LAST_PIT_INDEX - nextPitIndex];
-                board.getPits()[PLAYER_ONE_KALAH_INDEX] += (oppositeStones + 1);
+                collectOppositeStones(board, nextPitIndex, PLAYER_ONE_KALAH_INDEX);
             }
         } else if (game.isPlayerTwoTurn() && board.isPlayerTwoPit(nextPitIndex)) {
             if (board.getPits()[nextPitIndex] == 1) {
-                board.getPits()[nextPitIndex] = 0;
-                board.getPits()[PLAYER_TWO_LAST_PIT_INDEX - nextPitIndex] = 0;
-                int oppositeStones = board.getPits()[PLAYER_TWO_LAST_PIT_INDEX - nextPitIndex];
-                board.getPits()[PLAYER_TWO_KALAH_INDEX] += (oppositeStones + 1);
+                collectOppositeStones(board, nextPitIndex, PLAYER_TWO_KALAH_INDEX);
             }
         }
+    }
 
-        // TODO: Check the end's game after all turns
+    private void collectOppositeStones(Board board, int nextPitIndex, int kalahPalyerIndex) {
+        // In order to find the opposite pit index I did the following calc (assuming the following pit positions):
+        //   12 11 10  9  8  7
+        // 13                  6
+        //    0  1  2  3  4  5
+        // 12 = Last Player two pit
+        // So to get the opposite pit is just subtract the last player two pit index to the nextPitId.
+        // For example: 12 - 3 (nextPitId) = 9. So, the opposite pit of 3 is the pit of index 9
+        // The same logic but in inverse way
+        board.getPits()[nextPitIndex] = 0;
+        board.getPits()[PLAYER_TWO_LAST_PIT_INDEX - nextPitIndex] = 0;
+        int oppositeStones = board.getPits()[PLAYER_TWO_LAST_PIT_INDEX - nextPitIndex];
+        board.getPits()[kalahPalyerIndex] += (oppositeStones + 1);
+    }
+
+    private void setNextPlayer(Game game, Board board, int nextPitIndex) {
+        if (game.isPlayerOneTurn() && board.isNotPlayerOneKalah(nextPitIndex)) {
+            game.setNextPlayer(PLAYER_TWO);
+        } else if (game.isPlayerTwoTurn() && board.isNotPlayerTwoKalah(nextPitIndex)) {
+            game.setNextPlayer(PLAYER_ONE);
+        }
+    }
+
+    private boolean isGameOver(Board board) {
         boolean isGameOver = false;
-        if (board.isPlayerOneKalahsEmtpy()) {
+        if (board.isPlayerOnePitsEmtpy()) {
             log.info("Player one has no more stone on its kalah. So, Player one lose, unfortunately. But thanks for play!");
             isGameOver = true;
-        } else if (board.isPlayerTwoKalahsEmtpy()) {
+        } else if (board.isPlayerTwoPitsEmtpy()) {
             log.info("Player two has no more stone on its kalah. So, Player two lose, unfortunately. But thanks for play!");
             isGameOver = true;
         }
 
-        if (isGameOver) {
-            game.setGameStatus(FINISHED);
-        } else {
-            // TODO: Set the next player according the rules
-            if (game.isPlayerOneTurn() && board.isNotPlayerOneKalah(nextPitIndex)) {
-                game.setNextPlayer(PLAYER_TWO);
-            } else if (game.isPlayerTwoTurn() && board.isNotPlayerTwoKalah(nextPitIndex)) {
-                game.setNextPlayer(PLAYER_ONE);
-            }
-        }
+        return isGameOver;
+    }
 
-        gameRepository.save(game);
+    private void setGameAsFinished(Game game) {
+        game.setGameStatus(FINISHED);
 
+        // I added by myself at the model entity the field duration... It could be used in the future to check how long
+        // the game is taken. I though it could be helpful to have it
+        Instant startedTime = Instant.ofEpochMilli(game.getStartedTime());
+        Instant currentTime = now();
+        long duration = between(startedTime, currentTime).getSeconds();
+        game.setDuration(duration);
     }
 
     private Game retrieveGame(String gameId) throws GameApiException {

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import static com.edilson.justiniano.kalah.api.exception.GameApiErrorReason.GAME_IS_OVER;
 import static com.edilson.justiniano.kalah.api.exception.GameApiErrorReason.INVALID_MOVEMENT;
 import static com.edilson.justiniano.kalah.api.exception.GameApiErrorReason.PIT_WITH_NO_STONE;
 
@@ -17,7 +18,10 @@ public class GameDataValidator {
 
     public void validateMovement(Game game, int selectedPitId) throws GameApiException {
         Board board = game.getBoard();
-        if (game.isPlayerOneTurn() && !board.isPlayerOnePit(selectedPitId))  {
+        if (game.isGameOver()) {
+            log.error("The provided game is already over. GameId: {}.", game.getGameId());
+            throw new GameApiException(GAME_IS_OVER);
+        } else if (game.isPlayerOneTurn() && !board.isPlayerOnePit(selectedPitId))  {
             log.error("The selected Pit does not belong to the Player one. GameId: {} and PitId: {}.", game.getGameId(), selectedPitId);
             throw new GameApiException(INVALID_MOVEMENT);
         } else if (game.isPlayerTwoTurn() && !board.isPlayerTwoPit(selectedPitId)) {
