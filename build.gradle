@@ -23,6 +23,10 @@ dependencies {
 	// Mongo DB
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
+	//SWAGGER 2
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
 	compile group: 'org.codehaus.groovy', name: 'groovy', version: '3.0.0-beta-3'
 	compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '3.0.0-beta-1'
 	compile group: 'ch.qos.logback.contrib', name: 'logback-json-classic', version: '0.1.5'

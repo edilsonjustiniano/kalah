@@ -5,6 +5,7 @@ import com.edilson.justiniano.kalah.api.model.GameResponse;
 import com.edilson.justiniano.kalah.api.service.GameService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.edilson.justiniano.kalah.api.ApiConstants.PATH_PARAM_GAME_ID;
 import static com.edilson.justiniano.kalah.api.ApiConstants.PATH_PARAM_PIT_ID;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @AllArgsConstructor
@@ -28,7 +30,7 @@ public class GameController {
 
     private final GameService gameService;
 
-    @PostMapping(GAME_URL)
+    @PostMapping(value = GAME_URL, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<GameResponse> createGame() {
         log.info("Creating a new game.");
 
@@ -56,7 +58,7 @@ public class GameController {
                 .build();
     }
 
-    @PutMapping(MOVEMENT_URL)
+    @PutMapping(value = MOVEMENT_URL, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<GameResponse> moveGame(@PathVariable(PATH_PARAM_GAME_ID) String gameId,
                                                  @PathVariable(PATH_PARAM_PIT_ID) int pitId) throws GameApiException {
         log.info("Making a movement in the game. GameId: {} and PitId: {}.", gameId, pitId);
