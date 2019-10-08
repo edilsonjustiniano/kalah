@@ -17,6 +17,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
@@ -51,6 +52,7 @@ public class GameControllerTest {
         // then
         assertThat(result.getStatusCode(), equalTo(CREATED));
         assertThat(result.getBody(), equalTo(expectedGameResponse));
+        verify(gameService).createGame();
     }
 
     @Test
@@ -65,6 +67,8 @@ public class GameControllerTest {
         // then
         assertThat(result.getStatusCode(), equalTo(OK));
         assertThat(result.getBody(), equalTo(expectedGameResponse));
+        verify(gameService).searchGame(VALID_GAME_ID);
+
     }
 
     @Test(expected = GameApiException.class)
@@ -76,6 +80,7 @@ public class GameControllerTest {
         gameController.getGame(INVALID_GAME_ID);
 
         // then throw GameApiException
+        verify(gameService).searchGame(INVALID_GAME_ID);
     }
 
     @Test
@@ -89,6 +94,8 @@ public class GameControllerTest {
         // then
         assertThat(result.getStatusCode(), equalTo(NO_CONTENT));
         assertNull(result.getBody());
+        verify(gameService).removeGame(VALID_GAME_ID);
+
     }
 
     @Test(expected = GameApiException.class)
@@ -100,6 +107,7 @@ public class GameControllerTest {
         gameController.deleteGame(INVALID_GAME_ID);
 
         // then throw GameApiException
+        verify(gameService).removeGame(INVALID_GAME_ID);
     }
 
     @Test
@@ -114,6 +122,8 @@ public class GameControllerTest {
         // then
         assertThat(result.getStatusCode(), equalTo(OK));
         assertThat(result.getBody(), equalTo(expectedGameResponse));
+        verify(gameService).makeMovement(VALID_GAME_ID, VALID_PIT_ID);
+
     }
 
     @Test (expected = GameApiException.class)
@@ -125,6 +135,8 @@ public class GameControllerTest {
         gameController.moveGame(INVALID_GAME_ID, INVALID_PIT_ID);
 
         // then throw GameApiException
+        verify(gameService). makeMovement(INVALID_GAME_ID, INVALID_PIT_ID);
+
     }
 
     private GameResponse buildGameResponse() {

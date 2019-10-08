@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+/**
+ * Unit tests for {@link BaseExceptionHandler} class
+ */
 @RunWith(JUnit4.class)
 public class BaseExceptionHandlerTest {
 
@@ -31,7 +34,8 @@ public class BaseExceptionHandlerTest {
 
         // then
         assertThat(result.getStatusCode(), equalTo(HTTP_STATUS_ERROR));
-        assertThat(result.getBody(), equalTo(baseError));
+        assertThat(result.getBody().getErrorCode(), equalTo(baseError.getErrorCode()));
+        assertThat(result.getBody().getMessage(), equalTo(baseError.getMessage()));
     }
 
     private BaseError buildBaseError() {

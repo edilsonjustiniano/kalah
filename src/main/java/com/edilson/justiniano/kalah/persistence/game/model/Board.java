@@ -50,15 +50,15 @@ public class Board {
     }
 
     @Transient
-    public boolean isPlayerOnePitsEmtpy() {
-        return IntStream.range(0 , (PLAYER_ONE_KALAH - 2))
-                .noneMatch(pit -> pit > 0);
+    public boolean isPlayerOnePitsEmpty() {
+        return IntStream.range(0 , (PLAYER_ONE_KALAH - 1))
+                .noneMatch(i -> pits[i] > 0);
     }
 
     @Transient
-    public boolean isPlayerTwoPitsEmtpy() {
-        return IntStream.range(PLAYER_ONE_KALAH , (PLAYER_TWO_KALAH - 2))
-                .noneMatch(pit -> pit > 0);
+    public boolean isPlayerTwoPitsEmpty() {
+        return IntStream.range(PLAYER_ONE_KALAH , (PLAYER_TWO_KALAH - 1))
+                .noneMatch(i -> pits[i] > 0);
     }
 
 }

@@ -101,20 +101,20 @@ public class GameService {
      * Method that is responsible only to apply the movement according the selected pitId
      */
     private void startMovement(Game game, int pitId) {
-        Board board = game.getBoard();
-        int nextPitIndex = moveStones(game, pitId, board);
+
+        int nextPitIndex = moveStones(game, pitId);
 
         // Check the opposite pit is empty
-        takeOppositeStones(game, board, nextPitIndex);
+        takeOppositeStones(game, nextPitIndex);
 
         // Check the end's game after all turns
-        boolean isGameOver = isGameOver(board);
+        boolean isGameOver = isGameOver(game.getBoard());
 
         if (isGameOver) {
             setGameAsFinished(game);
         } else {
             // Set the next player according the rules
-            setNextPlayer(game, board, nextPitIndex);
+            setNextPlayer(game, nextPitIndex);
         }
 
         log.debug("Saving the game after apply the movement. GameId: {}.", game.getGameId());
@@ -122,7 +122,8 @@ public class GameService {
 
     }
 
-    private int moveStones(Game game, int pitId, Board board) {
+    private int moveStones(Game game, int pitId) {
+        Board board = game.getBoard();
         int numberOfStones = board.getPits()[pitId];
         board.getPits()[pitId] = 0;
 
@@ -147,7 +148,8 @@ public class GameService {
         return nextPitIndex;
     }
 
-    private void takeOppositeStones(Game game, Board board, int nextPitIndex) {
+    private void takeOppositeStones(Game game, int nextPitIndex) {
+        Board board = game.getBoard();
         // If it is the player one turn and the last stone is put in his/her owns pit, get the opposite pits stone
         if (game.isPlayerOneTurn() && board.isPlayerOnePit(nextPitIndex)) {
             if (board.getPits()[nextPitIndex] == 1) {
@@ -175,7 +177,8 @@ public class GameService {
         board.getPits()[kalahPalyerIndex] += (oppositeStones + 1);
     }
 
-    private void setNextPlayer(Game game, Board board, int nextPitIndex) {
+    private void setNextPlayer(Game game, int nextPitIndex) {
+        Board board = game.getBoard();
         if (game.isPlayerOneTurn() && board.isNotPlayerOneKalah(nextPitIndex)) {
             game.setNextPlayer(PLAYER_TWO);
         } else if (game.isPlayerTwoTurn() && board.isNotPlayerTwoKalah(nextPitIndex)) {
@@ -185,10 +188,10 @@ public class GameService {
 
     private boolean isGameOver(Board board) {
         boolean isGameOver = false;
-        if (board.isPlayerOnePitsEmtpy()) {
+        if (board.isPlayerOnePitsEmpty()) {
             log.info("Player one has no more stone on its kalah. So, Player one lose, unfortunately. But thanks for play!");
             isGameOver = true;
-        } else if (board.isPlayerTwoPitsEmtpy()) {
+        } else if (board.isPlayerTwoPitsEmpty()) {
             log.info("Player two has no more stone on its kalah. So, Player two lose, unfortunately. But thanks for play!");
             isGameOver = true;
         }
