@@ -58,16 +58,6 @@ The project structure and the responsibilities are stated below:
 
 - **exception**:
 
-Followings are the packages and layers of the program:
-
-- `game` package is the main package for game domain. We can access to a game using an implementation of `DataAccess` class.
-This package contains `BoardEntity` class as the main entity of the game and the `Controller` class as the controller layer of the game.
-Also the `DataAccess` interface is the database layer entry point. Any type of `DataAccess` can be implemented to handle the data storage process.
-Users of `DataAccess` does not know anything about the implementation according to Clean Architecture principles.
-
-- `ui` layer is the highest layer that depends on almost everything and we can change it easily because no layer is depended on it.
-RESTFull api `RestUserInterface` implemented as the main interaction point with the game but we can implement other types of
-user interfaces like graphical ones.
 
 ## Design patterns
 
@@ -133,7 +123,7 @@ curl --header "Content-Type: application/json" \
 ## Documentation
 
 Besides this documentation, the RESTfull API is also documented by SWAGGER, to check out 
-the SWAGGER documentation, run the application and access the following link: [localhost:8080/swagger-ui.html](localhost:8080/swagger-ui.html)
+the SWAGGER documentation, run the application and access the following link: [API documentation](http://localhost:8080/swagger-ui.html)
 
 ## Future improvements
 
