@@ -1,8 +1,8 @@
-package com.edilson.justiniano.kalah.unit.api.controller;
+package com.edilson.justiniano.kalah.api.controller;
 
-import com.edilson.justiniano.kalah.unit.api.exception.GameApiException;
-import com.edilson.justiniano.kalah.unit.api.model.GameResponse;
-import com.edilson.justiniano.kalah.unit.api.service.GameService;
+import com.edilson.justiniano.kalah.api.model.GameResponse;
+import com.edilson.justiniano.kalah.api.service.GameService;
+import com.edilson.justiniano.kalah.api.exception.GameApiException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

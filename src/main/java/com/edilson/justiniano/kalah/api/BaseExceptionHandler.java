@@ -1,4 +1,4 @@
-package com.edilson.justiniano.kalah.unit.api;
+package com.edilson.justiniano.kalah.api;
 
 import com.edilson.justiniano.kalah.exception.model.BaseError;
 import org.springframework.http.HttpStatus;

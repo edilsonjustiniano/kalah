@@ -1,4 +1,4 @@
-package com.edilson.justiniano.kalah.unit.configuration;
+package com.edilson.justiniano.kalah.configuration;
 
 import com.edilson.justiniano.kalah.configuration.SwaggerConfig;
 import org.junit.Test;

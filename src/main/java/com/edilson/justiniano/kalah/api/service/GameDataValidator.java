@@ -1,15 +1,15 @@
-package com.edilson.justiniano.kalah.unit.api.service;
+package com.edilson.justiniano.kalah.api.service;
 
-import com.edilson.justiniano.kalah.unit.api.exception.GameApiException;
+import com.edilson.justiniano.kalah.api.exception.GameApiException;
 import com.edilson.justiniano.kalah.persistence.game.model.Board;
 import com.edilson.justiniano.kalah.persistence.game.model.Game;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static com.edilson.justiniano.kalah.unit.api.exception.GameApiErrorReason.GAME_IS_OVER;
-import static com.edilson.justiniano.kalah.unit.api.exception.GameApiErrorReason.INVALID_MOVEMENT;
-import static com.edilson.justiniano.kalah.unit.api.exception.GameApiErrorReason.PIT_WITH_NO_STONE;
+import static com.edilson.justiniano.kalah.api.exception.GameApiErrorReason.GAME_IS_OVER;
+import static com.edilson.justiniano.kalah.api.exception.GameApiErrorReason.INVALID_MOVEMENT;
+import static com.edilson.justiniano.kalah.api.exception.GameApiErrorReason.PIT_WITH_NO_STONE;
 
 @Slf4j
 @AllArgsConstructor

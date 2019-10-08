@@ -1,4 +1,4 @@
-package com.edilson.justiniano.kalah.unit.configuration;
+package com.edilson.justiniano.kalah.configuration;
 
 import com.edilson.justiniano.kalah.configuration.JsonMapperConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;

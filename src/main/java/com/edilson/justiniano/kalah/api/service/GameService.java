@@ -1,7 +1,7 @@
-package com.edilson.justiniano.kalah.unit.api.service;
+package com.edilson.justiniano.kalah.api.service;
 
-import com.edilson.justiniano.kalah.unit.api.exception.GameApiException;
-import com.edilson.justiniano.kalah.unit.api.model.GameResponse;
+import com.edilson.justiniano.kalah.api.exception.GameApiException;
+import com.edilson.justiniano.kalah.api.model.GameResponse;
 import com.edilson.justiniano.kalah.persistence.game.model.Board;
 import com.edilson.justiniano.kalah.persistence.game.model.Game;
 import com.edilson.justiniano.kalah.persistence.game.repository.GameRepository;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
-import static com.edilson.justiniano.kalah.unit.api.exception.GameApiErrorReason.GAME_NOT_FOUND;
+import static com.edilson.justiniano.kalah.api.exception.GameApiErrorReason.GAME_NOT_FOUND;
 import static com.edilson.justiniano.kalah.persistence.game.model.GameStatus.FINISHED;
 import static com.edilson.justiniano.kalah.persistence.game.model.Player.PLAYER_ONE;
 import static com.edilson.justiniano.kalah.persistence.game.model.Player.PLAYER_TWO;

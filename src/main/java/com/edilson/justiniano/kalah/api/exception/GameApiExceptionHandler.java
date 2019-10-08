@@ -1,6 +1,6 @@
-package com.edilson.justiniano.kalah.unit.api.exception;
+package com.edilson.justiniano.kalah.api.exception;
 
-import com.edilson.justiniano.kalah.unit.api.BaseExceptionHandler;
+import com.edilson.justiniano.kalah.api.BaseExceptionHandler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

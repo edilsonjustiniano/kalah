@@ -1,5 +1,6 @@
-package com.edilson.justiniano.kalah.unit.api.model;
+package com.edilson.justiniano.kalah.api.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class GameResponse {
 
     private String id;

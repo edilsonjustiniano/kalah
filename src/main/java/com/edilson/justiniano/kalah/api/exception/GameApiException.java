@@ -1,4 +1,4 @@
-package com.edilson.justiniano.kalah.unit.api.exception;
+package com.edilson.justiniano.kalah.api.exception;
 
 import com.edilson.justiniano.kalah.exception.BaseException;
 

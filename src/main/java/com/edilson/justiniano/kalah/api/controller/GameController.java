@@ -1,8 +1,8 @@
-package com.edilson.justiniano.kalah.unit.api.controller;
+package com.edilson.justiniano.kalah.api.controller;
 
-import com.edilson.justiniano.kalah.unit.api.exception.GameApiException;
-import com.edilson.justiniano.kalah.unit.api.model.GameResponse;
-import com.edilson.justiniano.kalah.unit.api.service.GameService;
+import com.edilson.justiniano.kalah.api.exception.GameApiException;
+import com.edilson.justiniano.kalah.api.model.GameResponse;
+import com.edilson.justiniano.kalah.api.service.GameService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.edilson.justiniano.kalah.unit.api.ApiConstants.PATH_PARAM_GAME_ID;
-import static com.edilson.justiniano.kalah.unit.api.ApiConstants.PATH_PARAM_PIT_ID;
+import static com.edilson.justiniano.kalah.api.ApiConstants.PATH_PARAM_GAME_ID;
+import static com.edilson.justiniano.kalah.api.ApiConstants.PATH_PARAM_PIT_ID;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 

@@ -1,4 +1,4 @@
-package com.edilson.justiniano.kalah.unit.api;
+package com.edilson.justiniano.kalah.api;
 
 public final class ApiConstants {
 

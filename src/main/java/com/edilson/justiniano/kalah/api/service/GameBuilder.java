@@ -1,6 +1,6 @@
-package com.edilson.justiniano.kalah.unit.api.service;
+package com.edilson.justiniano.kalah.api.service;
 
-import com.edilson.justiniano.kalah.unit.api.model.GameResponse;
+import com.edilson.justiniano.kalah.api.model.GameResponse;
 import com.edilson.justiniano.kalah.persistence.game.model.Board;
 import com.edilson.justiniano.kalah.persistence.game.model.Game;
 import lombok.AllArgsConstructor;

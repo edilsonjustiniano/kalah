@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Configuration
 public class JsonMapperConfig {
@@ -16,6 +17,7 @@ public class JsonMapperConfig {
         ObjectMapper objectMapper = new ObjectMapper();
 
         objectMapper.setSerializationInclusion(NON_EMPTY);
+        objectMapper.setSerializationInclusion(NON_NULL);
 
         return objectMapper;
     }
