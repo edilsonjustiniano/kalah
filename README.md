@@ -28,6 +28,46 @@ It is being developed using Java 8, Spring Boot, Spring Mongo Data, Lombok and g
 
 ### Solution
 
+To implement the game according its rule, it was created a Spring Boot RESTfull API. using the following the following technologies:
+
+- Java 8
+- MongoDB
+- Spring Data MongoDB
+- Spring DI
+- Spring Boot
+- RESTfull API
+- Docker
+- Docker-compose
+- Gradle
+
+In this repository you will going to see a program highly scalable, testable, readable and maintainable. For those reason
+the project is easily deployed since it is using some of the best approach and technologies in the market.
+
+I used as principle the `Clean Architecture` as most as possible. It was not complete `Clean Architecture` because I used a Spring Boot and
+MongoDB, but if you have a look deeply on this repository you will be able to see that no extra knowledge is required to test the application.
+
+I also used as principle `KISS` (Keep it simple, stupid).
+
+The project structure and the responsibilities are stated below:
+
+- **api**: 
+
+- **configuration**: 
+
+- **persistence**:
+
+- **exception**:
+
+Followings are the packages and layers of the program:
+
+- `game` package is the main package for game domain. We can access to a game using an implementation of `DataAccess` class.
+This package contains `BoardEntity` class as the main entity of the game and the `Controller` class as the controller layer of the game.
+Also the `DataAccess` interface is the database layer entry point. Any type of `DataAccess` can be implemented to handle the data storage process.
+Users of `DataAccess` does not know anything about the implementation according to Clean Architecture principles.
+
+- `ui` layer is the highest layer that depends on almost everything and we can change it easily because no layer is depended on it.
+RESTFull api `RestUserInterface` implemented as the main interaction point with the game but we can implement other types of
+user interfaces like graphical ones.
 
 ## Design patterns
 
@@ -50,9 +90,50 @@ To run the program, it is required:
 
 ## How to run
 
-gradle clean build
+To build the application execute the following command on terminal:
 
+```
+gradle clean build
+```
+
+To run the application execute the following command on terminal:
+
+```
 docker-compose up
+```
+
+## How to test
+
+You can use the following rest calls to validate the application:
+
+> Create a game
+
+```
+curl --header "Content-Type: application/json" \ 
+     --request POST \ 
+     localhost:8080/games
+```
+
+> Retrieve a game
+
+```
+curl --header "Content-Type: application/json" \ 
+     --request GET \ 
+     localhost:8080/games/<gameId>
+```
+
+> Make a movement
+
+```
+curl --header "Content-Type: application/json" \ 
+     --request PUT \ 
+     localhost:8080/games/<gameId>/pits/<pitId>
+```
+
+## Documentation
+
+Besides this documentation, the RESTfull API is also documented by SWAGGER, to check out 
+the SWAGGER documentation, run the application and access the following link: [localhost:8080/swagger-ui.html](localhost:8080/swagger-ui.html)
 
 ## Future improvements
 
