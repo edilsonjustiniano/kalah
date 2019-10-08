@@ -4,6 +4,8 @@ services:
     image: mongo:latest
     container_name: "mongodb"
     environment:
+      - MONGODB_APPLICATION_DATABASE=kalah-db
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/kalah-db
       - MONGO_DATA_DIR=/data/db
       - MONGO_LOG_DIR=/dev/null
     volumes:
@@ -11,20 +13,20 @@ services:
     ports:
       - 27017:27017
     command: mongod --smallfiles --logpath=/dev/null # --quiet
-    #networks:
-    #  - app-network
-  #web:
-  #  build: .
-  #  command: bash -c "./gradlew clean build"
-  #  volumes:
-  #    - .:/kalah-app
-  #  ports:
-  #    - "8080:8080"
-  #  depends_on:
-  #    - mongodb
-  #  networks:
-  #    - app-network
+    networks:
+      - app-network
+  app:
+    build: .
+    image: edilson/kalah
+    volumes:
+      - .:/kalah-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
 
-#networks:
-#  app-network:
-#    driver: bridge
+networks:
+  app-network:
+    driver: bridge

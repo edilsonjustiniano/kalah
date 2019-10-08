@@ -1,5 +1,5 @@
 FROM openjdk:8
 MAINTAINER edilsonjustiniano
-COPY build/libs/kalah-0.0.1-SNAPSHOT.jar kalah.jar
+COPY kalah-1.0.0.jar /home/
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "kalah.jar"]
+CMD ["java", "-jar", "/home/kalah-1.0.0.jar", "--spring.data.mongodb.uri=mongodb://mongodb:27017"]

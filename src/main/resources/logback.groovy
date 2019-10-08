@@ -1,12 +1,10 @@
-import ch.qos.logback.classic.encoder.PatternLayoutEncoder
-import ch.qos.logback.core.ConsoleAppender
-import static ch.qos.logback.classic.Level.DEBUG
-import static ch.qos.logback.classic.Level.INFO
+def appName = "kalah-game"
 
-appender("stdout", ConsoleAppender) {
+appender("dev_stdout", ConsoleAppender) {
+    target = "System.out"
     encoder(PatternLayoutEncoder) {
-        pattern = "%d %p [%c] - %m%n"
+        pattern = "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n"
     }
 }
 
-root(INFO, ["stdout"])
+root(INFO, ["dev_stdout"])
