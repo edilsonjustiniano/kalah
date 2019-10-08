@@ -25,6 +25,8 @@ import static java.time.Instant.now;
 @AllArgsConstructor
 public class GameBuilder {
 
+    private static final String PROPERTY_SERVER_PORT = "server.port";
+
     private Environment environment;
 
     public Game buildGame() {
@@ -79,7 +81,7 @@ public class GameBuilder {
     }
 
     private String generateGameUrl(String gameId) {
-        String port = environment.getProperty("server.port");
+        String port = environment.getProperty(PROPERTY_SERVER_PORT);
         String host = InetAddress.getLoopbackAddress().getHostAddress();
 
         return new StringBuilder(host)
