@@ -46,12 +46,12 @@ I also used as principle `KISS` (Keep it simple, stupid).
 The project structure and the responsibilities are stated below:
 
 `api` is the package that contains the REST API definition for the game domain. 
-It is split in the following packages: `controller`, `exception`, `model`, `service`.
+It is split in the following sub-packages: `controller`, `exception`, `model`, `service`.
 
 - On `controller` sub-package it is present the class that define the RESTfull API.
 - On `exception` sub-package there is a ExceptionHandler for the Game API domain exception, also
 I have the custom exception and the error code as well.
-- On `model` sub-package you can find out the class `GameResponse` used by the Game API as an entity response.
+- On `model` sub-package you can find out the class **GameResponse** used by the Game API as an entity response.
 - On `service` sub-package, there are three different classes each one has their single responsibility. 
 The `GameBuilder` class contains the necessary logic to build any kind of object instance regarding of the Game API.
 The `GameDataValidator` class is responsible to perform the data validation such as the game is still running or not, the movement is a valid or not, etc.
@@ -59,19 +59,19 @@ The `GameService` class is the service class that receives all the requests that
 to handle the game interactions.
 
 `configuration` is the package that contains the custom configuration required for the application. One of them is
-the `SwaggerConfig` to document the REST API. The other configuration is the Jackson object mapper. 
+the **SwaggerConfig** to document the REST API. The other configuration is the Jackson object mapper. 
 
-`persistence`: is the package that contains the entity `Game` as the main entity of the application. Also on this package there is
+`persistence`: is the package that contains the entity **Game** as the main entity of the application. Also on this package there is
 a sub-package called `repository` that contains an interface called **GameRepository** used as a database abstraction layer.
 
 I decided to use the SpringData to access the database methods because it is quite simple and fast to create a new query on database, 
 it is only required a new method signature, sometimes a `@Query` definition.
 
-`exception` is the package that is responsible to expose the `BaseException` and also the application `BaseError` class. 
+`exception` is the package that is responsible to expose the **BaseException** and also the application **BaseError** class. 
 This last one was created to customize the application error messages.
 
-Inside the `BaseError` there are two attributes, message and errorCode. The errorCode contains a String error key that can be used by the
-Front-end or even other micro-service application to map the error and present a message according the language desired. An example of `BaseError`:
+Inside the **BaseError** there are two attributes, message and errorCode. The errorCode contains a String error key that can be used by the
+Front-end or even other micro-service application to map the error and present a message according the language desired. An example of **BaseError**:
 
 ````json
 {
