@@ -19,6 +19,8 @@ import java.util.UUID;
 @Document
 public class Game {
 
+    // I decided to use a Hash (UUID) as Primary Key (Id) because we faced a lot of issues during the data migration
+    // on our micro-services. So I use the same idea we are using right now
     @Id
     private String gameId;
     private long startedTime;
