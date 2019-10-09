@@ -21,11 +21,6 @@ and puts them in his own Kalah.
 The game is over as soon as one of the sides run out of stones. The player who still has stones in his/her
 pits keeps them and puts them in his/hers Kalah. The winner of the game is the player who has the most stones in his Kalah.
 
-This repository contains a application to simulate the 6 stone kalah game.
-
-It is being developed using Java 8, Spring Boot, Spring Mongo Data, Lombok and gradle.
-
-
 ## Solution
 
 To implement the game according its rule, it was created a Spring Boot RESTfull API. using the following the following technologies:
