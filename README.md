@@ -92,7 +92,8 @@ To define a new error key I did use the same pattern used to create application 
 ## Prerequisites
 
 It is necessary the followings to build the program:
-- Latest docker version
+- Latest docker version 
+- docker login performed as well (once the mongodb image will be downloaded)
 - docker-compose
 - Latest gradle version
 - JDK 1.8+

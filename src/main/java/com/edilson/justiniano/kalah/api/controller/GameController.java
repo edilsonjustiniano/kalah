@@ -31,7 +31,7 @@ public class GameController {
 
     @PostMapping(value = GAME_URL, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<GameResponse> createGame() {
-        log.info("Creating a new game.");
+        log.info("Requesting a new game.");
 
         return ResponseEntity
                 .status(CREATED)
@@ -48,7 +48,7 @@ public class GameController {
 
     @DeleteMapping(GAME_URL_WITH_GAME_ID)
     public ResponseEntity deleteGame(@PathVariable(PATH_PARAM_GAME_ID) String gameId) throws GameApiException {
-        log.info("Deleting the game. GameId: {}.", gameId);
+        log.info("Requesting the game deletion. GameId: {}.", gameId);
 
         gameService.removeGame(gameId);
 
