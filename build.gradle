@@ -4,7 +4,6 @@ plugins {
 	id "io.freefair.lombok" version "4.1.2"
 	id 'java'
 	id 'idea'
-	id 'groovy'
 }
 
 group = 'com.edilson.justiniano'
@@ -31,10 +30,8 @@ dependencies {
 	testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '2.1'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.4'
+	compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.5.8'
 	compile group: 'ch.qos.logback.contrib', name: 'logback-json-classic', version: '0.1.5'
-	compile group: 'ch.qos.logback.contrib', name: 'logback-jackson', version: '0.1.5'
-	compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '5.2'
 }
 
 build {
